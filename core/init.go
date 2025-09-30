@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"log"
 	"math/rand"
 	"time"
@@ -23,10 +24,24 @@ func sendMessage(message any, msg *pluginIO.Message) {
 	}()
 	switch message.(type) {
 	case string:
-		pluginIO.SendMessage(message.(string), msg.UserId, msg.GroupId)
+		var send string
+		if msg.AtMe {
+			send = fmt.Sprintf("[CQ:at,qq=%d] %s", msg.UserId, message.(string))
+		} else {
+			send = message.(string)
+		}
+		pluginIO.SendMessage(send, msg.UserId, msg.GroupId)
 	case []any:
 		log.Println("send msg", message)
 		var send []pluginIO.MessageItem
+		if msg.AtMe {
+			send = append(send, pluginIO.MessageItem{
+				Type: "at",
+				Data: map[string]any{
+					"qq": msg.UserId,
+				},
+			})
+		}
 		for _, v := range message.([]any) {
 			val := v.(map[string]interface{})
 			send = append(send, pluginIO.MessageItem{
