@@ -32,7 +32,6 @@ func sendMessage(message any, msg *pluginIO.Message) {
 		}
 		pluginIO.SendMessage(send, msg.UserId, msg.GroupId)
 	case []any:
-		log.Println("send msg", message)
 		var send []pluginIO.MessageItem
 		if msg.AtMe {
 			send = append(send, pluginIO.MessageItem{
