@@ -30,7 +30,7 @@ func sendMessage(message any, msg *pluginIO.Message) {
 		} else {
 			send = message.(string)
 		}
-		pluginIO.SendMessage(send, msg.UserId, msg.GroupId)
+		pluginIO.SendMessage(send, msg.UserId, msg.GroupId, msg.SelfId)
 	case []any:
 		var send []pluginIO.MessageItem
 		if msg.AtMe {
@@ -48,6 +48,6 @@ func sendMessage(message any, msg *pluginIO.Message) {
 				Data: val["data"].(map[string]any),
 			})
 		}
-		pluginIO.SendMessage(send, msg.UserId, msg.GroupId)
+		pluginIO.SendMessage(send, msg.UserId, msg.GroupId, msg.SelfId)
 	}
 }
